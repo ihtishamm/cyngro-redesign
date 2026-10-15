@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Cyngro brand (from cyngro.com Elementor globals) */
+  --green: #7cc046;
+  --green-deep: #3e7a1e; /* 5.2:1 on white — for green text */
+  --green-soft: #e9f5df;
+  --ink: #0b0d0a;
+  --text: #3c3c3c;
+  --grey: #d9dcdf;
+  --mist: #f4f6f1;
+  --paper: #ffffff;
+
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --gutter: clamp(16px, 1.4vw, 24px);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-soft: var(--green-soft);
+  --color-ink: var(--ink);
+  --color-text: var(--text);
+  --color-grey: var(--grey);
+  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-serif-italic);
+  --font-mono: var(--font-mono-code);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--ink);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@layer components {
+/* Editorial italic accent (neutomni pairs a grotesk with an italic serif) */
+.it {
+  font-family: var(--font-serif-italic), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.mono {
+  font-family: var(--font-mono-code), ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gutter {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* SplitText line wrappers keep descenders while masking */
+.split-line {
+  will-change: transform, filter, opacity;
+}
+
+/* Pill outline used for section tags ("Our Process", "Contact") */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.35em 1.1em 0.4em;
+}
+}
+
+/* Barcode on service tickets */
+.barcode {
+  background-image: var(--bars);
+  background-size: 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Reel marquee rows */
+@keyframes marquee-x {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee-x var(--marquee-dur, 40s) linear infinite;
+}
+.marquee-rev {
+  animation-direction: reverse;
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
 }
